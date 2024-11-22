@@ -11,7 +11,7 @@ Dokumentasi API Strapi:
 2. Buka command prompt di folder tersebut
 3. ketik "npm run develop" dan tunggu proses sampai succesfully
 4. Buka aplikasi Postman atau di browser untuk mengecek API (bisa menggunakan API check yang lain)
-5. Endpoint API:
+5. Endpoint API (GET):
    - About: http://localhost:1337/api/abouts
    - Home: http://localhost:1337/api/homes
    - Produk: http://localhost:1337/api/authors
