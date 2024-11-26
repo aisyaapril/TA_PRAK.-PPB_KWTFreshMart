@@ -14,34 +14,40 @@ class ProdukPage extends StatefulWidget {
 }
 
 class _ProdukPageState extends State<ProdukPage> {
-  getHttp() async {
-    final response = await dio.get('http://localhost:1337/api/authors');
-    produkList = response.data['data'];
-    setState(() {});
-  }
-
   List produkList = [];
+  bool isLoading = true;
 
-  bool isLoading = false;
-
-  Future<void> refreshData() async {
-    setState(() {
-      isLoading = true;
-    });
+  Future<void> fetchData() async {
+    try {
+      final response = await dio.get('http://localhost:1337/api/authors');
+      produkList = response.data['data'];
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
-    getHttp();
     super.initState();
-    refreshData();
+    fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Our Products'),
+        title: const Text('Produk Tani'),
+        titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
         actions: const [],
       ),
       body: GridView.builder(
@@ -95,7 +101,6 @@ class _ProdukPageState extends State<ProdukPage> {
                           },
                         ),
                       ),
-
                     const SizedBox(height: 18.0),
 
                     // Tombol "Detail Produk"

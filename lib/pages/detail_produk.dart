@@ -28,7 +28,7 @@ class DetailProdukPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Our Products'),
+        backgroundColor: Colors.transparent,
       ),
       body: ListView(
         shrinkWrap: true,

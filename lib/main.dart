@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'KWT Freshmart',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.green),
       home: const NavigationPage(), // Memanggil halaman utama dengan navigasi
     );
   }

@@ -13,34 +13,40 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  getHttp() async {
-    final response = await dio.get('http://localhost:1337/api/abouts');
-    aboutText = response.data['data'];
-    setState(() {});
-  }
-
   List aboutText = [];
+  bool isLoading = true;
 
-  bool isLoading = false;
-
-  Future<void> refreshData() async {
-    setState(() {
-      isLoading = true;
-    });
+  Future<void> fetchData() async {
+    try {
+      final response = await dio.get('http://localhost:1337/api/abouts');
+      aboutText = response.data['data'];
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
-    getHttp();
     super.initState();
-    refreshData();
+    fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text('About Us'),
+        title: Text('Tentang Kami'),
+        titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
         actions: const [],
       ),
       body: ListView.builder(

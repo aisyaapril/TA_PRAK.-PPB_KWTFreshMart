@@ -11,34 +11,40 @@ class KegiatanPage extends StatefulWidget {
 }
 
 class _KegiatanPageState extends State<KegiatanPage> {
-  getHttp() async {
-    final response = await dio.get('http://localhost:1337/api/kegiatans');
-    kegiatanText = response.data['data'];
-    setState(() {});
-  }
-
   List kegiatanText = [];
-
-  bool isLoading = false;
-
-  Future<void> refreshData() async {
-    setState(() {
-      isLoading = true;
-    });
-  }
+  bool isLoading = true;
 
   @override
   void initState() {
-    getHttp();
     super.initState();
-    refreshData();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      final response = await dio.get('http://localhost:1337/api/kegiatans');
+      kegiatanText = response.data['data'];
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kegiatan Kami'),
+        title: Text('Kegiatan Tani'),
+        titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
         actions: const [],
       ),
       body: ListView.builder(
@@ -59,7 +65,10 @@ class _KegiatanPageState extends State<KegiatanPage> {
                 children: [
                   Text(
                     kegiatanText[index]['nama'],
-                    style: const TextStyle(fontSize: 14),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0,
+                    ),
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 16),
