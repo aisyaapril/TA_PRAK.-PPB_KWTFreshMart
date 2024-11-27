@@ -8,9 +8,10 @@ class DetailProdukPage extends StatelessWidget {
 
   // Fungsi untuk membuka WhatsApp
   void _launchWhatsApp() async {
-    final phone = '+6285736958065'; // Ganti dengan nomor WhatsApp Anda
+    const phone = '6285736958065';
     final message = 'Halo kak, saya ingin pesan ${produk['nama']}';
-    final url = 'https://wa.me/$phone?text=$message';
+    final url = 'https://wa.me/$phone?text=${Uri.encodeComponent(message)}';
+    print('Launching URL: $url'); // Tambahkan print untuk debugging
     if (await canLaunch(url)) {
       await launch(url);
     } else {
